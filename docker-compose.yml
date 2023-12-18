@@ -1,0 +1,41 @@
+# Version: Compose specification
+
+networks:
+  internal:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/16
+
+services:
+  nginx:
+    container_name: nginx
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    networks:
+      - internal
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./logs/nginx/:/var/log/nginx/
+      - ./battleships/:/app/battleships/
+
+  battleships:
+    container_name: battleships
+    build:
+      context: ./battleships/
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    networks:
+      - internal
+    volumes:
+      - ./docker/php-fpm.conf:/usr/local/etc/php-fpm.d/zzz-docker.conf
+      - ./battleships/:/app/battleships/:cached
+
+  memcached:
+    container_name: memcached
+    image: memcached:1.6.22-alpine
+    restart: unless-stopped
+    networks:
+      - internal

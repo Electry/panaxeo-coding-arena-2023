@@ -1,0 +1,7 @@
+services:
+  router: Electry\Battleships\Router\RouterFactory::createRouter
+  storage: Electry\Battleships\Storage\MemcachedStorage(%memcached.host%, %memcached.port%)
+  - Electry\Battleships\Model\Services\MapService
+  - Electry\Battleships\Model\Services\UserService
+
+  - Electry\Battleships\Model\Facades\FireFacade

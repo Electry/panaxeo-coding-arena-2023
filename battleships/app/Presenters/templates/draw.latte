@@ -1,0 +1,45 @@
+{varType \Electry\Battleships\Model\Engine\Map $map}
+{varType array $messages}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Battleships</title>
+
+    <style>
+        .cell {
+            width: 20px;
+            height: 20px;
+            background-color: white;
+        }
+        .cell.water {
+            background-color: deepskyblue;
+        }
+        .cell.ship {
+            background-color: black;
+        }
+        .cell.undiscovered {
+            opacity: 0.1;
+        }
+    </style>
+</head>
+
+<body>
+    <div>Map id: {$map->getId()}</div>
+    <table>
+    {for $y = 0; $y < $map->getHeight(); $y++}
+        <tr>
+        {for $x = 0; $x < $map->getWidth(); $x++}
+            <td n:class="cell, $map->isCellDiscovered($x, $y) ? discovered : undiscovered, $map->isCellOccupied($x, $y) ? ship : water"></td>
+        {/for}
+        </tr>
+    {/for}
+    </table>
+
+    {foreach $messages as $message}
+        <div>{$message}</div>
+    {/foreach}
+</body>
+</html>
